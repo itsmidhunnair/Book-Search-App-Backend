@@ -12,7 +12,7 @@ const typeDefs = `#graphql
     publisher: String
     authors: [String!]
     publishedDate: String
-    pageCount: Int!
+    pageCount: Int
     averageRating: Float
     ratingsCount: Int
     imageLinks: imageLinks
