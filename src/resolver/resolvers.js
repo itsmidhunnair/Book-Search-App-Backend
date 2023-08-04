@@ -26,6 +26,23 @@ const resolvers = {
         console.log(error);
       }
     },
+    bookList: async (parent, { ids = [] }) => {
+      const result = await Promise.all(
+        ids.map(async (id) => {
+          try {
+            const { data } = await axios.get(`${process.env.BASE_URL}/${id}`);
+            return data;
+          } catch (error) {
+            console.log(
+              "🚀 ~ file: resolvers.js:33 ~ bookList: ~ error:",
+              error
+            );
+          }
+        })
+      );
+      console.log("🚀 ~ file: resolvers.js:44 ~ bookList: ~ result:", result);
+      return result;
+    },
   },
 };
 
