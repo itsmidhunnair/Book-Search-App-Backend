@@ -45,7 +45,7 @@ const typeDefs = `#graphql
   type Query {
     books(input: BooksInput): [Books!]
     book(id: ID!): Books
-    bookList(ids: [ID]!): [Books]
+    bookList(ids: [ID]): [Books]
   }
 `;
 

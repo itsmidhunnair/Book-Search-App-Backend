@@ -1,5 +1,6 @@
 const axios = require("axios");
 const dotenv = require("dotenv");
+const { GraphQLError } = require("graphql");
 
 dotenv.config();
 
@@ -27,21 +28,32 @@ const resolvers = {
       }
     },
     bookList: async (parent, { ids = [] }) => {
-      const result = await Promise.all(
-        ids.map(async (id) => {
-          try {
+      try {
+        // const result = [];
+        // ids.forEach(async (id) => {
+        //   const { data } = await axios.get(`${process.env.BASE_URL}/${id}`);
+        //   result.push(data);
+        // });
+
+        const result = await Promise.all(
+          ids.map(async (id) => {
             const { data } = await axios.get(`${process.env.BASE_URL}/${id}`);
             return data;
-          } catch (error) {
-            console.log(
-              "🚀 ~ file: resolvers.js:33 ~ bookList: ~ error:",
-              error
-            );
-          }
-        })
-      );
-      console.log("🚀 ~ file: resolvers.js:44 ~ bookList: ~ result:", result);
-      return result;
+          })
+        );
+        return result;
+      } catch (error) {
+        console.log(
+          "🚀 ~ file: resolvers.js:48 ~ bookList: ~ error:",
+          error.response.data.message
+        );
+        throw new GraphQLError(error.response.data.message, {
+          extensions: {
+            code: error.response.status,
+            msg: error.response.statusText,
+          },
+        });
+      }
     },
   },
 };
